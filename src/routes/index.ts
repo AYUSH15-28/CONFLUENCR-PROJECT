@@ -20,3 +20,4 @@ router.use('/accounts', accountRoutes);
 router.use('/transfers', transferRoutes);
 
 export const apiRoutes = router;
+

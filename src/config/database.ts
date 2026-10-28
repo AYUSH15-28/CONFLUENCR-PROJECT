@@ -43,3 +43,4 @@ export const isReplicaSet = (): boolean => isReplicaSetActive;
 export const setReplicaSet = (value: boolean): void => {
   isReplicaSetActive = value;
 };
+

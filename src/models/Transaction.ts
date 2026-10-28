@@ -83,3 +83,4 @@ transactionSchema.index({ account_id: 1, created_at: -1 });
 transactionSchema.index({ account_id: 1, type: 1, created_at: -1 });
 
 export const TransactionModel = model<ITransaction>('Transaction', transactionSchema);
+

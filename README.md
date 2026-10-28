@@ -13,7 +13,6 @@ A robust, enterprise-grade backend API for a simple financial transaction ledger
   - [Prerequisites](#prerequisites)
   - [Environment Setup](#environment-setup)
   - [Local Installation & Run](#local-installation--run)
-  - [Running with Docker Compose](#running-with-docker-compose)
 - [API Endpoints & Documentation](#-api-endpoints--documentation)
 - [Automated Testing](#-automated-testing)
 - [Postman Collection](#-postman-collection)
@@ -63,7 +62,6 @@ The system implements a double-entry capable transaction ledger with high data i
 - **Security & Utilities**: Helmet, CORS, Morgan, dotenv, UUID v4
 - **Documentation**: Swagger UI & OpenAPI 3.0
 - **Testing**: Built-in test runner with Supertest / Integration tests
-- **Containerization**: Docker & Docker Compose
 
 ---
 
@@ -88,8 +86,6 @@ The system implements a double-entry capable transaction ledger with high data i
 │   └── ASSUMPTIONS.md       # Documented assumptions & architectural decisions
 ├── tests/                  # End-to-end and integration test suites
 ├── postman_collection.json # Ready-to-import Postman collection
-├── Dockerfile              # Multi-stage optimized Docker build
-├── docker-compose.yml      # Multi-container setup with MongoDB
 └── package.json            # Scripts & dependencies
 ```
 
@@ -113,7 +109,7 @@ The system implements a double-entry capable transaction ledger with high data i
 
 ### Prerequisites
 - Node.js (v18.x or later)
-- MongoDB (Local instance, Atlas URI, or Docker)
+- MongoDB (v6.0+ or v8.x installed locally, or MongoDB Atlas connection URI)
 - pnpm or npm
 
 ### Environment Setup
@@ -161,21 +157,6 @@ The server will start at `http://localhost:3000`.
 
 ---
 
-### Running with Docker Compose
-
-To start the API and a dedicated MongoDB instance with zero manual setup:
-
-```bash
-docker compose up --build
-```
-
-To stop:
-```bash
-docker compose down -v
-```
-
----
-
 ## 📚 API Endpoints & Documentation
 
 Interactive documentation is available via **Swagger UI** at `/api-docs`.
@@ -212,3 +193,4 @@ npm test
 
 A complete Postman collection is included in the root directory: [`postman_collection.json`](file:///c:/Users/Ayush/OneDrive/Desktop/Confluencr%20Project/postman_collection.json).
 Import it into Postman or Insomnia to execute the pre-configured workflow from account creation to transfers.
+

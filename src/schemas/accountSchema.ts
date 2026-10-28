@@ -35,3 +35,4 @@ export const accountIdParamSchema = z.object({
 });
 
 export type CreateAccountInput = z.infer<typeof createAccountSchema>['body'];
+

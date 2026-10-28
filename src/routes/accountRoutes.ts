@@ -52,3 +52,4 @@ router.all('/:id/transactions/:txId', (req, res) => {
 });
 
 export const accountRoutes = router;
+

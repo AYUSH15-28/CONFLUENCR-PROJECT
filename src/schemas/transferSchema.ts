@@ -45,3 +45,4 @@ export const createTransferSchema = z.object({
 });
 
 export type CreateTransferInput = z.infer<typeof createTransferSchema>['body'];
+

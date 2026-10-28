@@ -80,3 +80,4 @@ export const getTransactionsQuerySchema = z.object({
 
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>['body'];
 export type GetTransactionsQuery = z.infer<typeof getTransactionsQuerySchema>['query'];
+

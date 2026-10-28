@@ -44,3 +44,4 @@ This document outlines the architectural decisions, business rules, and domain a
 - **Master Transfer Record**: An immutable record in the `transfers` collection with unique `reference_id` links the two transaction IDs.
 - **Atomicity**: If either account fails (insufficient funds, missing destination account, network failure), the entire operation rolls back. Partial transfers are impossible.
 - **Self-Transfer**: A transfer where `source_account_id === destination_account_id` is rejected with `400 Bad Request`.
+

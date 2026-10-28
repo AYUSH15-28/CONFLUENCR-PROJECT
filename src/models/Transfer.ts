@@ -81,3 +81,4 @@ const transferSchema = new Schema<ITransfer>(
 );
 
 export const TransferModel = model<ITransfer>('Transfer', transferSchema);
+

@@ -47,3 +47,4 @@ export class InsufficientBalanceError extends AppError {
     super(message, HttpStatus.UNPROCESSABLE_ENTITY, 'INSUFFICIENT_BALANCE', details);
   }
 }
+
