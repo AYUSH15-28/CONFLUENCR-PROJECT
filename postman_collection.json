@@ -1,0 +1,224 @@
+{
+  "info": {
+    "_postman_id": "c7a8b9f0-21de-4b13-912b-ledger001",
+    "name": "Transaction Ledger API",
+    "description": "Postman Collection for testing the Transaction Ledger API with MongoDB",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accountId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "accountBId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "1. Create Account A",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data) {",
+              "    pm.collectionVariables.set('accountId', jsonData.data.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice Johnson\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/accounts",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts"]
+        }
+      }
+    },
+    {
+      "name": "2. Create Account B",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data) {",
+              "    pm.collectionVariables.set('accountBId', jsonData.data.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Bob Smith\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/accounts",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts"]
+        }
+      }
+    },
+    {
+      "name": "3. Get Account Balance",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/balance",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "balance"]
+        }
+      }
+    },
+    {
+      "name": "4. Credit Account A (+100.00)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"credit\",\n  \"amount\": 100,\n  \"description\": \"Initial account credit\",\n  \"reference_id\": \"REF-CREDIT-101\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "transactions"]
+        }
+      }
+    },
+    {
+      "name": "5. Debit Account A (-30.00)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"debit\",\n  \"amount\": 30,\n  \"description\": \"Coffee and snacks\",\n  \"reference_id\": \"REF-DEBIT-201\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "transactions"]
+        }
+      }
+    },
+    {
+      "name": "6. Debit Account A Overdraft Attempt (Expected 422)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"debit\",\n  \"amount\": 500,\n  \"description\": \"Exceeds balance\",\n  \"reference_id\": \"REF-DEBIT-OVERDRAFT\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "transactions"]
+        }
+      }
+    },
+    {
+      "name": "7. Duplicate Reference Check (Expected 409)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"credit\",\n  \"amount\": 50,\n  \"description\": \"Duplicate ref attempt\",\n  \"reference_id\": \"REF-CREDIT-101\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "transactions"]
+        }
+      }
+    },
+    {
+      "name": "8. Get Transaction History (All)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "transactions"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Get Transaction History (Filter Credit)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/accounts/{{accountId}}/transactions?type=credit&page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["accounts", "{{accountId}}", "transactions"],
+          "query": [
+            { "key": "type", "value": "credit" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. Bonus: Transfer Money (A to B)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"source_account_id\": \"{{accountId}}\",\n  \"destination_account_id\": \"{{accountBId}}\",\n  \"amount\": 25,\n  \"reference_id\": \"TRF-A-TO-B-001\",\n  \"description\": \"Settling team lunch\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transfers",
+          "host": ["{{baseUrl}}"],
+          "path": ["transfers"]
+        }
+      }
+    }
+  ]
+}
